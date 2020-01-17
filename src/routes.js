@@ -3,7 +3,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import React , { Component } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import Main from './pages/main';
+import Games from './pages/games';
 import GameInfo from './pages/gameInfo';
 import Filter from './pages/filter';
 import TapView from './tabs/tapView/tapView';
@@ -12,7 +12,7 @@ import Dice from './tabs/dice/dice.js';
 
 
 const RootStack = createStackNavigator({
-    Main,
+    Games,
     GameInfo,
     Filter,
 }, 
