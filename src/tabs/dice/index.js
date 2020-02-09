@@ -1,6 +1,7 @@
 import React, { useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Dice from '../../components/dice.js';
+import Constants from 'expo-constants';
 
 const DiceRoller = ({ navigation }) => {
 
@@ -21,6 +22,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#d9a703",
+        marginTop: Constants.statusBarHeight,
     },
 
     backContainer: {

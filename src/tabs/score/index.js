@@ -1,7 +1,8 @@
 import React, { useState} from 'react';
-import { View, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, ScrollView, StatusBar } from 'react-native';
 import { Overlay, Input, Button} from 'react-native-elements';
 import {images} from '../../helpers/images';
+import Constants from 'expo-constants';
 //import {AddPlayers} from '../../components/addPlayers';
 
 const Score = ({ navigation }) => {
@@ -44,6 +45,7 @@ const Score = ({ navigation }) => {
 
     return ( 
         <View style={styles.container}>
+            <StatusBar barStyle="light-content" backgroundColor="#d9a703" />
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backContainer}>
                 <Image style={styles.backIcon} source={images.Back}/>
             </TouchableOpacity>
@@ -66,6 +68,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#d9a703",
+        marginTop: Constants.statusBarHeight,
     },
 
     backContainer: {

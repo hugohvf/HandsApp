@@ -3,42 +3,24 @@ import { Text, View, Image, Picker, TouchableOpacity, StyleSheet, ScrollView} fr
 import { Slider, CheckBox  } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-const Filter = ({ navigation,  playersR, checkedPlayersR, filterStatus,
-                timeR, checkedTimeR, easyR, 
-                mediumR, hardR, classicR,
-                partyR, strategyR, goodForsR,
-                checkedGoodForR, goodForR, dispatch }) => {
-
-    const [players, setPlayers] = useState(playersR);
-    const [checkedPlayers, setCheckedPlayers] = useState(checkedPlayersR);
-    const [time, setTime] = useState(timeR);
-    const [checkedTime, setCheckedTime] = useState(checkedTimeR);
-    const [easy, setEasy] = useState(easyR);
-    const [medium, setMedium] = useState(mediumR);
-    const [hard, setHard] = useState(hardR);
-    const [classic, setClassic] = useState(classicR);
-    const [party, setParty] = useState(partyR);
-    const [strategy, setStrategy] = useState(strategyR);
-    const [goodFors, setGoodFors] = useState(goodForsR);
-    const [goodFor, setGoodFor] = useState(goodForR);
-    const [checkedGoodFor, setCheckedGoodFor] = useState(checkedGoodForR);
-
-
-    if(goodFor == '') {
-        setGoodFor(goodFors[0]); 
-    }
-
-    if(!filterStatus){
-            setCheckedPlayers(false);
-            setCheckedTime(false);
-            setEasy(false);
-            setMedium(false);
-            setHard(false);
-            setClassic(false);
-            setParty(false);
-            setStrategy(false);
-            setCheckedGoodFor(false);
-    }
+const Filter = ({ navigation, players, checkedPlayers, 
+                time, checkedTime, easy, 
+                medium, hard, classic,
+                party, strategy, goodFors,
+                checkedGoodFor, dispatch, goodFor }) => {
+    const [players, setPlayers] = useState(players);
+    const [checkedPlayers, setCheckedPlayers] = useState(checkedPlayers);
+    const [time, setTime] = useState(time);
+    const [checkedTime, setCheckedTime] = useState(params.filterSettings.checkedTime);
+    const [easy, setEasy] = useState(params.filterSettings.easy);
+    const [medium, setMedium] = useState(params.filterSettings.medium);
+    const [hard, setHard] = useState(params.filterSettings.hard);
+    const [classic, setClassic] = useState(params.filterSettings.classic);
+    const [party, setParty] = useState(params.filterSettings.party);
+    const [strategy, setStrategy] = useState(params.filterSettings.strategy);
+    const [goodFors, setGoodFors] = useState(params.filterSettings.goodFors);
+    const [goodFor, setGoodFor] = useState(params.filterSettings.goodFor);
+    const [checkedGoodFor, setCheckedGoodFor] = useState(params.filterSettings.checkedGoodFor);
 
      return (
         <ScrollView>
@@ -58,7 +40,7 @@ const Filter = ({ navigation,  playersR, checkedPlayersR, filterStatus,
                                 checkedIcon={<Image style={{height: 20, width: 20}} source={require('../../resources/icon/checked.png')} />}
                                 uncheckedIcon={<Image style={{height: 20, width: 20}} source={require('../../resources/icon/unchecked.png')} />}
                                 checked={checkedPlayers}
-                                onPress={() => setCheckedPlayers(!checkedPlayers)}
+                                onPress={() => dispatch({type: "TOGGLE_PLAYERS"})}
                             />
                         </View>  
 
@@ -68,7 +50,7 @@ const Filter = ({ navigation,  playersR, checkedPlayersR, filterStatus,
                                 minimumValue={1}
                                 maximumValue={12}
                                 value={players}
-                                onValueChange={(value) => setPlayers(value)}
+                                onValueChange={(value) => dispatch({type: "SET_PLAYERS", value: value})}
                                 thumbTintColor={'#d9a703'}
                                 thumbTouchSize={{width: 60, height: 40}}
                             />
@@ -96,7 +78,7 @@ const Filter = ({ navigation,  playersR, checkedPlayersR, filterStatus,
                                 checkedIcon={<Image style={{height: 20, width: 20}} source={require('../../resources/icon/checked.png')} />}
                                 uncheckedIcon={<Image style={{height: 20, width: 20}} source={require('../../resources/icon/unchecked.png')} />}
                                 checked={checkedTime}
-                                onPress={() => setCheckedTime(!checkedTime)}
+                                onPress={() => dispatch({type: "TOGGLE_TIME"})}
                             />
                         </View>  
 
@@ -106,7 +88,7 @@ const Filter = ({ navigation,  playersR, checkedPlayersR, filterStatus,
                                 minimumValue={10}
                                 maximumValue={180}
                                 value={time}
-                                onValueChange={(value) => setTime(value)}
+                                onValueChange={(value) => dispatch({type: "SET_TIME", value: value})}
                                 thumbTintColor={'#d9a703'}
                                 thumbTouchSize={{width: 60, height: 40}}
                             />
@@ -139,7 +121,7 @@ const Filter = ({ navigation,  playersR, checkedPlayersR, filterStatus,
                                 title={'Fácil'}
                                 textStyle={{color: '#000', fontSize: 15,}}
                                 containerStyle={{backgroundColor: '#d9a703'}}
-                                onPress={() => setEasy(!easy)}
+                                onPress={() => dispatch({type: "TOGGLE_EASY"})}
                             />
                             
                             <CheckBox
@@ -150,7 +132,7 @@ const Filter = ({ navigation,  playersR, checkedPlayersR, filterStatus,
                                 title={'Médio'}
                                 textStyle={{color: '#000', fontSize: 15,}}
                                 containerStyle={{backgroundColor: '#d9a703'}}            
-                                onPress={() => setMedium(!medium)}
+                                onPress={() => dispatch({type: "TOGGLE_MEDIUM"})}
                             />
                             <CheckBox
                                 iconRight
@@ -160,7 +142,7 @@ const Filter = ({ navigation,  playersR, checkedPlayersR, filterStatus,
                                 title={'Difícil'}
                                 textStyle={{color: '#000', fontSize: 15,}}
                                 containerStyle={{backgroundColor: '#d9a703'}}
-                                onPress={() => setHard(!hard)}
+                                onPress={() => dispatch({type: "TOGGLE_HARD"})}
                             />
                             </View>
                     </View>
@@ -184,7 +166,7 @@ const Filter = ({ navigation,  playersR, checkedPlayersR, filterStatus,
                                     title={'Clássico'}
                                     textStyle={{color: '#000', fontSize: 13,}}
                                     containerStyle={{backgroundColor: '#d9a703'}}
-                                    onPress={() => setClassic(!classic) }
+                                    onPress={() => dispatch({type: "TOGGLE_CLASSIC"})}
                                 />
 
                                 <CheckBox
@@ -195,7 +177,7 @@ const Filter = ({ navigation,  playersR, checkedPlayersR, filterStatus,
                                     title={'Party'}
                                     textStyle={{color: '#000', fontSize: 13,}}
                                     containerStyle={{backgroundColor: '#d9a703'}}            
-                                    onPress={() => setParty(!party)}
+                                    onPress={() => dispatch({type: "TOGGLE_PARTY"})}
                                 />
                                 <CheckBox
                                     iconRight
@@ -205,7 +187,7 @@ const Filter = ({ navigation,  playersR, checkedPlayersR, filterStatus,
                                     title={'Estratégia'}
                                     textStyle={{color: '#000', fontSize: 13}}
                                     containerStyle={{backgroundColor: '#d9a703',}}
-                                    onPress={() => setStrategy(!strategy) }
+                                    onPress={() => dispatch({type: "TOGGLE_STRATEGY"})}
                                 />
                             </View>
                         </View>
@@ -224,7 +206,7 @@ const Filter = ({ navigation,  playersR, checkedPlayersR, filterStatus,
                                             checkedIcon={<Image style={{height: 20, width: 20}} source={require('../../resources/icon/checked.png')} />}
                                             uncheckedIcon={<Image style={{height: 20, width: 20}} source={require('../../resources/icon/unchecked.png')} />}
                                             checked={checkedGoodFor}
-                                            onPress={() => setCheckedGoodFor(!checkedGoodFor)}
+                                            onPress={() => dispatch({type: "TOGGLE_GOODFOR"})}
                                         />
                                 </View>
                                                    
@@ -234,8 +216,7 @@ const Filter = ({ navigation,  playersR, checkedPlayersR, filterStatus,
                                                     mode={('dialog')}
                                                     selectedValue={goodFor}
                                                     style={{height: 50, width: '90%', alignSelf: 'center'}}
-                                                    onValueChange={(itemValue) =>setGoodFor(itemValue)}
-                                                    >
+                                                    onValueChange={(itemValue) => dispatch({type: "SET_GOODFOR", value: itemValue})}>
                                                 {goodFors.map((item, index) => <Picker.Item itemStyle={{backgroundColor: '#f0f0f0'}} label={item} value={item} key={index} />)}
                                                     </Picker>
                                                 </View> 
@@ -250,20 +231,7 @@ const Filter = ({ navigation,  playersR, checkedPlayersR, filterStatus,
                                 }
                             </View> 
                 <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 3}}>
-                         <TouchableOpacity onPress={() => {dispatch({type: "UPDATE_FILTERS", 
-                            players,
-                            checkedPlayers,
-                            time,
-                            checkedTime,
-                            easy,
-                            medium,
-                            hard,
-                            classic,
-                            party,
-                            strategy,
-                            goodFor,
-                            checkedGoodFor}); 
-                        navigation.goBack();}}>
+                         <TouchableOpacity onPress={() => navigation.goBack()}>
                              <View style={{backgroundColor: '#d9a703',
                                             borderWidth: 1,
                                             borderColor: '#42301C',
@@ -286,10 +254,14 @@ const Filter = ({ navigation,  playersR, checkedPlayersR, filterStatus,
      );
     }
 
-const CleanComponent = ({ dispatch }) => {
-
-    return (
-        <TouchableOpacity onPress={() => dispatch({type: "CLEAN_FILTERS"}) }>
+Filter.navigationOptions = ({ navigation }) => ({
+    title: 'Filtros',
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+    headerRight: () => { return(
+    <TouchableOpacity >
         <View style={{
                         width: 80,
                         height: 35,
@@ -301,18 +273,7 @@ const CleanComponent = ({ dispatch }) => {
                         fontFamily: 'sans-serif',}}>Limpar</Text>
         </View>
     </TouchableOpacity>
-    );
-}
-
-const Clean = connect()(CleanComponent); // passing search from hooks
-
-Filter.navigationOptions = ({ navigation }) => ({
-    title: 'Filtros',
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
-    headerRight: () => <Clean/>,
+    )}
 });
 
 const styles = StyleSheet.create({
@@ -323,18 +284,17 @@ const styles = StyleSheet.create({
 
 
 export default connect(state => ({
-    playersR: state.players,
-    checkedPlayersR: state.checkedPlayers,
-    timeR: state.time,
-    checkedTimeR: state.checkedTime,
-    easyR: state.easy,
-    mediumR: state.medium,
-    hardR: state.hard,
-    classicR: state.classic,
-    partyR: state.party,
-    strategyR: state.strategy,
-    goodForR: state.goodFor,
-    goodForsR: state.goodFors,
-    checkedGoodForR: state.checkedGoodFor,
-    filterStatus: state.filterStatus,
+    players: state.players,
+    checkedPlayers: state.checkedPlayers,
+    time: state.time,
+    checkedTime: state.checkedTime,
+    easy: state.easy,
+    medium: state.medium,
+    hard: state.hard,
+    classic: state.classic,
+    party: state.party,
+    strategy: state.strategy,
+    goodFor: state.goodFor,
+    goodFors: state.goodFors,
+    checkedGoodFor: state.checkedGoodFor,
 }))(Filter);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {SearchBar, Image, Badge} from 'react-native-elements';
+import { withNavigation } from 'react-navigation'
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import { images } from "../../helpers/images";
@@ -33,7 +34,6 @@ const Games = ({navigation}) => {
     
     const loadGames = async () => {
         setStatus(false);
-        
         const url = 'https://script.googleusercontent.com/macros/echo?user_content_key=6zHUkk4V_JpPoNBamC-jM1mPOa0nYNzj4EyEIAQQ321HFUhnbmsv-53sAx1Prckxx8ZJzm6i920_5aUdqP-DMz6kDEo_ViOSm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnFRR9YzJZhWTmr9lwr3NVXTgvhUEhWjVbQ0Vch5Hq5cbLEBZriGkMTC9q0cQfp1v3tpytj_A4aoE&lib=MYaf-IVUoN4gNLR2pzGvtyveXYCx8nRBo'
         const response = await axios.get(url)
         await dispatch({ type: 'SET_GAMES', value: response.data.filter(item => item.game.length > 0) })
@@ -44,11 +44,10 @@ const Games = ({navigation}) => {
                 gFors.push(docs[i].goodFor)
             }
             
-        }
-                                        
-        dispatch({ type: 'SET_GOODFORS', value: gFors});
-
+        }                      
+        await dispatch({ type: 'SET_GOODFORS', value: gFors});
         setStatus(true);
+
     }  
 
     const renderItem = ({ item }) => {
@@ -153,14 +152,12 @@ const Games = ({navigation}) => {
     
 }
 
-const Search = ({search, filterStatus, navigation}) => { //this.props.search
-    console.log(this.props);
-    const dispatch = useDispatch();
-    const localsearch = '';
-    updateSearch = () => {
-        console.log(this);
+const Search = ({search, filterStatus, navigation, dispatch}) => {
+    
+    updateSearch = (searchValue) => {  
+        dispatch({type: "SET_SEARCH", value: searchValue})
     }
-
+    
     return (
     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <View style={{flex:1, padding: 10, justifyContent: 'center', }}>
@@ -179,12 +176,12 @@ const Search = ({search, filterStatus, navigation}) => { //this.props.search
         <View style={{flex: 1, justifyContent: 'center', padding: 10}}>
                 <SearchBar
                     placeholder="Escolha um jogo"
-                    containerStyle={{padding: 3 ,width: "100%", backgroundColor:'#57402b', borderTopWidth:0, borderBottomWidth:0, alignSelf:'center'}}
-                    inputContainerStyle={{backgroundColor:'#d9a703'}}
+                    containerStyle={{padding: 3 ,width: "100%", backgroundColor:'#4b3521', borderTopWidth:0, borderBottomWidth:0, alignSelf:'center'}}
+                    inputContainerStyle={{backgroundColor:'#fff'}}
                     placeholderTextColor= '#000'
                     inputStyle={{color: '#000', bottom: -2}}
                     clearIcon = {search!=''?(
-                        <TouchableOpacity onPress={() => {search=''}}> 
+                        <TouchableOpacity onPress={() => dispatch({type: "SET_SEARCH", value: ""})}> 
                             <Image style={{width: 20, height: 20}}
                             source={images.Delete}
                             />
@@ -193,7 +190,7 @@ const Search = ({search, filterStatus, navigation}) => { //this.props.search
                     cancelIcon
                     searchIcon={null}
                     round
-                    onChangeText={updateSearch()}
+                    onChangeText={updateSearch}
                     value={search}
                     autoCorrect={false}
                 />
@@ -202,7 +199,7 @@ const Search = ({search, filterStatus, navigation}) => { //this.props.search
     );
 }
 
-let SearchContainer = connect(state => ({search: state.search, filterStatus: state.filterStatus}))(Search); // passing search from hooks
+let SearchContainer = withNavigation(connect(state => ({search: state.search, filterStatus: state.filterStatus}))(Search)); // passing search from hooks
 
 Games.navigationOptions = ({ navigation }) => ({
 
@@ -227,7 +224,7 @@ Games.navigationOptions = ({ navigation }) => ({
     )},
 
 
-    headerRight: () => <SearchContainer />,
+    headerRight: () => <SearchContainer navigation={navigation} />,
 
 
 });

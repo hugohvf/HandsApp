@@ -35,34 +35,36 @@ function data(state = INITIAL_STATE, action) {
             return {...state, counter: action.value};
         case 'SET_SEARCH':
             return {...state, search: action.value};
-        case 'TOGGLE_FILTER':
-            return {...state, filterStatus: !state.filterStatus};
-        case 'TOGGLE_PLAYERS':
-            return {...state, checkedPlayers: !state.checkedPlayers};
-        case 'SET_PLAYERS':
-            return {...state, players: action.value};
-        case 'TOGGLE_TIME':
-            return {...state, checkedTime: !state.checkedTime};
-        case 'SET_TIME':
-            return {...state, time: action.value};
-        case 'TOGGLE_EASY':
-            return {...state, easy: !state.easy};
-        case 'TOGGLE_MEDIUM':
-            return {...state, medium: !state.medium};
-        case 'TOGGLE_HARD':
-            return {...state, hard: !state.hard};
-        case 'TOGGLE_CLASSIC':
-            return {...state, classic: !state.classic};
-        case 'TOGGLE_PARTY':
-            return {...state, party: !state.party};
-        case 'TOGGLE_STRATEGY':
-            return {...state, strategy: !state.strategy};
+        case 'UPDATE_FILTERS':
+            return {...state, filterStatus: true,
+                players: action.players,
+                checkedPlayers: action.checkedPlayers,
+                time: action.time,
+                checkedTime: action.checkedTime,
+                easy: action.easy,
+                medium: action.medium,
+                hard: action.hard,
+                classic: action.classic,
+                party: action.party,
+                strategy: action.strategy,
+                goodFor: action.goodFor,
+                checkedGoodFor: action.checkedGoodFor};
         case 'SET_GOODFORS':
-            return {...state, goodFors: [action.value]};
-        case 'TOGGLE_GOODFOR':
-            return {...state, checkedGoodFor: !state.checkedGoodFor};
-        case 'SET_GOODFOR':
-            return {...state, goodFor: action.value};
+            return {...state, goodFors: action.value};
+        case 'CLEAN_FILTERS':
+            return {...state, 
+                    filterStatus: false,
+                    checkedPlayers: false,
+                    checkedTime: false,
+                    easy: false,
+                    medium: false,
+                    hard: false,
+                    classic: false,
+                    party: false,
+                    strategy: false,
+                    goodFor: '',
+                    checkedGoodFor: false,
+                    }
         default:
             return state;
     }
